@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import WalletCard from "./ui/WalletCard";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -12,6 +13,8 @@ import {
   MessageCircle,
   Plus
 } from "lucide-react";
+import { useState } from "react";
+import CreateWalletModal from "./ui/CreateWalletModal";
 
 const mockData = {
   totalBalance: 12450.75,
@@ -37,7 +40,8 @@ const mockData = {
 export default function Dashboard() {
   const netWorth = mockData.totalBalance - mockData.debts.reduce((sum, debt) => sum + debt.balance, 0);
   const monthlyNet = mockData.monthlyIncome - mockData.monthlyExpenses;
-
+  const walletItems = Array.from({length: 10}, (_, i) => i+1);
+  const [isCreateWalletModalOpen, setCreateWalletModalOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -48,7 +52,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Track your money, reach your goals</p>
           </div>
           <div>
-            <Button size="lg" className="mr-5 bg-gradient-to-r from-primary to-savings text-white shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button size="lg" className="mr-5 bg-gradient-to-r from-primary to-savings text-white shadow-lg hover:shadow-xl transition-all duration-300" onClick={() => setCreateWalletModalOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Add Wallet
             </Button>
@@ -58,7 +62,20 @@ export default function Dashboard() {
             </Button>
           </div>
         </div>
-
+        <CreateWalletModal
+          isOpen={isCreateWalletModalOpen}
+          onClose={() => setCreateWalletModalOpen(false)}
+        >
+          <h2>Create Wallet</h2>
+          <Button>
+            Add
+          </Button>
+          <Button
+            onClick={() => setCreateWalletModalOpen(false)}
+          >
+            Close
+          </Button>
+        </CreateWalletModal>
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-card to-accent/20 shadow-soft hover:shadow-medium transition-all duration-300">
@@ -88,6 +105,47 @@ export default function Dashboard() {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Wallet Cards Section */}
+        <div className="grid grid-flow-col auto-cols-[200px] gap-4 overflow-x-auto p-4 scroll-smooth">
+          {walletItems.map((item) => (
+            <div
+              key={item}
+              className="bg-gray-200 rounded-lg p-8 text-center"
+            >
+              TEst
+            </div>
+          ))}
+          
+          <WalletCard
+            title="GCash"
+            balance={100}
+            onClick={() => alert("Clicked on-hand cash!!!!")}
+          />
+          <WalletCard
+            title="Maya"
+            balance={5000}
+            onClick={() => alert("Clicked on-hand cash!!!!")}
+          />
+          <WalletCard
+            title="RCBC"
+            balance={1000}
+            onClick={() => alert("Clicked on-hand cash!!!!")}
+          />
+
+          <WalletCard
+            title="BDO"
+            balance={1000}
+            onClick={() => alert("Clicked on-hand cash!!!!")}
+          />
+
+          <WalletCard
+            title="SeaBank"
+            balance={1000}
+            onClick={() => alert("Clicked on-hand cash!!!!")}
+          />
+          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
