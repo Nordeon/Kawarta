@@ -15,7 +15,7 @@ const CreateWalletModal:React.FC<ModalProps>= ({isOpen, onClose, children}) => {
             onClick={onClose}
         >
             <div
-                className='bg-white rounded-1g p-6 shadow-lg max-w-lg w-full'
+                className='bg-white rounded-lg p-6 px-20 shadow-lg max-w-[40rem] w-full max-h-[24rem] h-full'
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}

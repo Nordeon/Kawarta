@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import CreateWalletModal from "./ui/CreateWalletModal";
+import { title } from "process";
 
 const mockData = {
   totalBalance: 12450.75,
@@ -40,15 +41,34 @@ const mockData = {
 export default function Dashboard() {
   const netWorth = mockData.totalBalance - mockData.debts.reduce((sum, debt) => sum + debt.balance, 0);
   const monthlyNet = mockData.monthlyIncome - mockData.monthlyExpenses;
-  const walletItems = Array.from({length: 10}, (_, i) => i+1);
+
   const [isCreateWalletModalOpen, setCreateWalletModalOpen] = useState(false);
+  const [walletForm, setWalletForm] = useState({type: "Cash", title: "", balance: 0});
+  const [walletTypes] = useState(["Cash", "Digital Bank", "Traditional Bank"])
+  const [wallets, setWallets] = useState([
+    {type: "Cash", title: "On-hand Cash", balance: 1000}
+  ]);
+
+  const handleAddWallet = () => {
+    setWallets([...wallets, walletForm]);
+    setWalletForm({type: "Cash", title: "", balance: 0});
+    setCreateWalletModalOpen(false);
+  }
+
+  const handleSelectingWalletType = (selected) => {
+    setWalletForm({
+      ...walletForm,
+      type: selected
+    });
+  }
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Financial Dashboard</h1>
+            <h1 className="text-3xl font-bold text-foreground">Portfolio</h1>
             <p className="text-muted-foreground">Track your money, reach your goals</p>
           </div>
           <div>
@@ -62,20 +82,56 @@ export default function Dashboard() {
             </Button>
           </div>
         </div>
+
+        {/* Wallet Creation Modal*/}
         <CreateWalletModal
           isOpen={isCreateWalletModalOpen}
           onClose={() => setCreateWalletModalOpen(false)}
         >
-          <h2>Create Wallet</h2>
-          <Button>
-            Add
-          </Button>
-          <Button
-            onClick={() => setCreateWalletModalOpen(false)}
-          >
-            Close
-          </Button>
+          <h2 className="flex justify-center text-lg">Add Wallet</h2>
+          <span >Select Wallet Type</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-2">
+            {walletTypes.map((title, index) => (
+              <div>
+                <Card 
+                  key={index} 
+                  onClick = {() => handleSelectingWalletType(title)}
+                  className={`flex h-10 items-center justify-center cursor-pointer ${walletForm.type === title ? "bg-gray-700 text-white" : "bg-white text-black" }`}
+                >
+                  {title}
+                </Card>
+              </div>
+            ))}
+          </div>
+          <span>Details</span>
+          <input
+            type="text"
+            placeholder="Title"
+            value={walletForm.title}
+            onChange={(e) => setWalletForm({...walletForm, title:e.target.value})}
+            className="border p-2 rounded w-full mb-2"
+          />
+          <input
+            type="number"
+            placeholder="Balance"
+            value={walletForm.balance}
+            onChange={(e) => setWalletForm({...walletForm, balance:e.target.value})}
+            className="border p-2 rounded w-full mb-2"
+          />
+          <div className="flex justify-center">
+            <Button 
+              onClick={handleAddWallet}
+            >
+              Add
+            </Button>
+            <Button
+              onClick={() => setCreateWalletModalOpen(false)}
+            >
+              Close
+            </Button>
+          </div>
         </CreateWalletModal>
+
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-card to-accent/20 shadow-soft hover:shadow-medium transition-all duration-300">
@@ -108,44 +164,16 @@ export default function Dashboard() {
         </div>
 
         {/* Wallet Cards Section */}
-        <div className="grid grid-flow-col auto-cols-[200px] gap-4 overflow-x-auto p-4 scroll-smooth">
-          {walletItems.map((item) => (
-            <div
-              key={item}
-              className="bg-gray-200 rounded-lg p-8 text-center"
-            >
-              TEst
-            </div>
+        <div className="grid grid-flow-col auto-cols-[300px] gap-4 overflow-x-auto p-4 scroll-smooth">
+          {wallets.map((wallet, index) => (
+            <WalletCard 
+              key={index} 
+              type={wallet.type}
+              title={wallet.title} 
+              balance={wallet.balance}
+              onClick={() => alert("Clicked on "+wallet.title)}
+            />
           ))}
-          
-          <WalletCard
-            title="GCash"
-            balance={100}
-            onClick={() => alert("Clicked on-hand cash!!!!")}
-          />
-          <WalletCard
-            title="Maya"
-            balance={5000}
-            onClick={() => alert("Clicked on-hand cash!!!!")}
-          />
-          <WalletCard
-            title="RCBC"
-            balance={1000}
-            onClick={() => alert("Clicked on-hand cash!!!!")}
-          />
-
-          <WalletCard
-            title="BDO"
-            balance={1000}
-            onClick={() => alert("Clicked on-hand cash!!!!")}
-          />
-
-          <WalletCard
-            title="SeaBank"
-            balance={1000}
-            onClick={() => alert("Clicked on-hand cash!!!!")}
-          />
-          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
