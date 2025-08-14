@@ -15,7 +15,7 @@ import {
 
 const mockData = {
   totalBalance: 12450.75,
-  monthlyIncome: 5200.00,
+  monthlyIncome: 3250.00,
   monthlyExpenses: 3850.25,
   savingsGoals: [
     { name: "Emergency Fund", target: 10000, current: 6500, progress: 65 },
@@ -24,8 +24,7 @@ const mockData = {
     {name: "Gaming PC", target: 500, current: 20, progress: 4}
   ],
   debts: [
-    { name: "Credit Card", balance: 2500, minPayment: 75 },
-    { name: "Student Loan", balance: 15000, minPayment: 250 }
+    { name: "Student Loan", balance: 5000, minPayment: 750 },
   ],
   recentTransactions: [
     { id: 1, description: "Grocery Store", amount: -125.50, category: "Food", date: "2024-01-15" },
@@ -48,17 +47,23 @@ export default function Dashboard() {
             <h1 className="text-3xl font-bold text-foreground">Financial Dashboard</h1>
             <p className="text-muted-foreground">Track your money, reach your goals</p>
           </div>
-          <Button size="lg" className="bg-gradient-to-r from-primary to-savings text-white shadow-lg hover:shadow-xl transition-all duration-300">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Transaction
-          </Button>
+          <div>
+            <Button size="lg" className="mr-5 bg-gradient-to-r from-primary to-savings text-white shadow-lg hover:shadow-xl transition-all duration-300">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Wallet
+            </Button>
+            <Button size="lg" className="bg-gradient-to-r from-primary to-savings text-white shadow-lg hover:shadow-xl transition-all duration-300">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Transaction
+            </Button>
+          </div>
         </div>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-card to-accent/20 shadow-soft hover:shadow-medium transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Balance</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Savings</CardTitle>
               <DollarSign className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
@@ -146,27 +151,29 @@ export default function Dashboard() {
           </Card>
         </div>
         
-        <Card className="bg-gradient-to-br from-card to-income/10 shadow-soft hover:shadow-medium transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Income</CardTitle>
-            <TrendingUp className="h-4 w-4 text-income" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">₱{mockData.monthlyIncome.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">After taxes</p>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card className="bg-gradient-to-br from-card to-income/10 shadow-soft hover:shadow-medium transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Estimated Monthly Income</CardTitle>
+              <TrendingUp className="h-4 w-4 text-income" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">₱{mockData.monthlyIncome.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">After calculations</p>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-gradient-to-br from-card to-expense/10 shadow-soft hover:shadow-medium transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Expenses</CardTitle>
-            <TrendingDown className="h-4 w-4 text-expense" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">₱{mockData.monthlyExpenses.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">This month</p>
-          </CardContent>
-        </Card>
+          <Card className="bg-gradient-to-br from-card to-expense/10 shadow-soft hover:shadow-medium transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Expenses</CardTitle>
+              <TrendingDown className="h-4 w-4 text-expense" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-foreground">₱{mockData.monthlyExpenses.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">This month</p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Recent Transactions */}
         <Card className="shadow-soft">

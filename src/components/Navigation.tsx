@@ -57,11 +57,8 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}>
         <div className="p-6">
-          <div className="flex items-center space-x-2 mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-savings rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">FM</span>
-            </div>
-            <h2 className="text-xl font-bold text-foreground">FinanceManager</h2>
+          <div className="flex items-center space-x-2 mb-8 justify-center">
+            <h2 className="text-xl font-bold text-foreground">Kawarta</h2>
           </div>
 
           <nav className="space-y-2">
